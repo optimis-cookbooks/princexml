@@ -1,6 +1,12 @@
 package = 'prince-7.1-ubuntu904-amd64-dynamic'
 file = "#{package}.tar.gz"
 
+directory '/src' do
+  user 'root'
+  group 'root'
+  action :create
+end
+
 remote_file "/src/#{file}" do
   source "http://www.princexml.com/download/#{file}"
   mode 0644
