@@ -1,6 +1,8 @@
 package = 'prince-7.1-ubuntu904-amd64-dynamic'
 file = "#{package}.tar.gz"
 
+package 'msttcorefonts'
+
 directory '/src' do
   user 'root'
   group 'root'
