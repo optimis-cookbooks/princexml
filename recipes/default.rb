@@ -13,7 +13,6 @@ remote_file "/src/#{file}" do
   source "http://www.princexml.com/download/7.1/#{file}"
   mode 0644
   action :create_if_missing
-  notifies :run, 'bash[install_princexml]', :immediately
 end
 
 bash 'install_princexml' do
@@ -21,7 +20,6 @@ bash 'install_princexml' do
   user 'root'
   cwd '/src'
   code "tar -xvf #{file} && cd #{package} && ./install.sh"
-  action :nothing
 end
 
 if node[:prince] && node[:prince][:license_cookbook]
