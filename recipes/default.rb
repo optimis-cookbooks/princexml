@@ -10,7 +10,7 @@ directory '/src' do
 end
 
 remote_file "/src/#{file}" do
-  source "http://www.princexml.com/download/7.1/#{file}"
+  source "http://www.princexml.com/download/#{file}"
   mode 0644
   action :create_if_missing
 end
