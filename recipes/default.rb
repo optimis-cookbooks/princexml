@@ -1,10 +1,5 @@
-if node['platform_version'].to_f >= 14.04
-  package_version = 9
-  pkg = 'prince_9.0-5_ubuntu14.04_amd64.deb'
-else
-  package_version = 7
-  pkg = 'prince-7.1-ubuntu904-amd64-dynamic.tar.gz'
-end
+pkg_v7 = 'prince-7.1-ubuntu904-amd64-dynamic.tar.gz'
+pkg_v9 = 'prince_9.0-5_ubuntu14.04_amd64.deb'
 
 if node['platform_version'].to_f >= 14.04
   package 'ttf-mscorefonts-installer'
@@ -23,24 +18,24 @@ if node['platform_version'].to_f >= 14.04
   end
 end
 
-remote_file "/tmp/#{pkg}" do
-  source "http://www.princexml.com/download/#{pkg}"
-  mode 0644
-  action :create_if_missing
-end
-
 if node['platform_version'].to_f >= 14.04
+  remote_file "/tmp/#{pkg_v9}" do
+    source "http://www.princexml.com/download/#{pkg_v9}"
+    mode 0644
+    action :create_if_missing
+  end
+
   dpkg_package 'prince' do
-    source "/tmp/#{pkg}"
+    source "/tmp/#{pkg_v9}"
     action :install
   end
 end
 
 bash 'install_princexml' do
-  not_if "/usr/local/bin/prince --version | grep #{package_version}"
+  not_if "/usr/local/bin/prince --version | grep 7.1"
   user 'root'
   cwd '/tmp'
-  code "tar -xvf #{package} && cd #{package.gsub('.tar.gz', '')} && ./install.sh"
+  code "tar -xvf #{pkg_v7} && cd #{pkg_v7.gsub('.tar.gz', '')} && ./install.sh"
 end
 
 if node[:prince] && node[:prince][:license_cookbook]
